@@ -1,0 +1,21 @@
+{
+  "name": "smallprograms-loancalculator",
+  "version": "1.0.0",
+  "main": "loanCalculator.js",
+  "scripts": {
+    "lint": "npx eslint loanCalculator.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.12.1",
+    "eslint-cli": "^1.1.1"
+  },
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
+}
