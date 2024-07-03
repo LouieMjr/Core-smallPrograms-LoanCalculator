@@ -4,5 +4,5 @@
   "askForLoanDuration": "What is the duration of the loan in months?",
   "greeting": "Lets calculate your Monthly Loan payment!",
   "notValidNumber": "is not a valid number!",
-  "enterValidNumber": "Enter valid number!"
+  "enterValidNumber": "Enter valid number greater than 0!"
 }

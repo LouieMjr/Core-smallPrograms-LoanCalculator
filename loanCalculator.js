@@ -6,7 +6,7 @@ const prompt = (message) => {
   return `=> ${console.log(message)}`;
 };
 
-const invalidNumber = number => Number.isNaN(Number(number)) || number.trimStart() === '';
+const invalidNumber = number => Number.isNaN(Number(number)) || number.trimStart() === '' || number < 1;
 
 const getValidNumber = () => {
   let number = ask();
