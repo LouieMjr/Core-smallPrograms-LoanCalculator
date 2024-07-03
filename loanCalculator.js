@@ -35,7 +35,8 @@ const numberToDecimal = () => {
 const loanDuration = () => {
   prompt(messagePrompts.askForLoanDuration);
   const loanDuration = getValidNumber();
-  return loanDuration;
+  const year = 12;
+  return loanDuration * year;
 };
 
 const calculateMonthlyPayment = (
@@ -56,6 +57,16 @@ const reasonableMonthlyPayment = (monthlyPayment, totalPaid ,totalInterest) => {
   return reasonable;
 };
 
+const restartLoanCalculator = () => {
+  prompt(messagePrompts.calculateAnotherLoan);
+  const response = ask().toLowerCase();
+  if (response[0] === 'y' || response[0] === "yes") {
+    console.clear();
+    return runLoanCalculator();
+  }
+  return 'Take care!';
+};
+
 function runLoanCalculator() {
   prompt(messagePrompts.greeting);
   prompt(messagePrompts.askForLoanAmount);
@@ -63,16 +74,17 @@ function runLoanCalculator() {
   prompt(`Your loan amount is $${loanAmount.toLocaleString()}`);
   const annualPercentageRate = numberToDecimal();
   const monthlyInterestRate = annualPercentageRate / 12;
-  const loanDurationInMonths = loanDuration();
+  const loanDurationInYears = loanDuration();
   const monthlyPayment = calculateMonthlyPayment(
-    loanAmount, loanDurationInMonths, monthlyInterestRate
+    loanAmount, loanDurationInYears, monthlyInterestRate
   );
-  const totalPaidAfterInterest = monthlyPayment * loanDurationInMonths;
+  const totalPaidAfterInterest = monthlyPayment * loanDurationInYears;
   const totalInterest = totalPaidAfterInterest - loanAmount;
 
-  return reasonableMonthlyPayment(
+  console.log(reasonableMonthlyPayment(
     monthlyPayment, totalPaidAfterInterest, totalInterest
-  );
+  ));
+  return restartLoanCalculator();
 }
 
 console.log(runLoanCalculator());

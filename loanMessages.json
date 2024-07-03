@@ -1,8 +1,9 @@
 {
   "askForLoanAmount": "How much is the loan?",
   "askForAPR": "What is the Annual Percentage Rate (APR)?",
-  "askForLoanDuration": "What is the duration of the loan in months?",
+  "askForLoanDuration": "What is the duration of the loan in years?",
   "greeting": "Lets calculate your Monthly Loan payment!",
   "notValidNumber": "is not a valid number!",
-  "enterValidNumber": "Enter valid number greater than 0!"
+  "enterValidNumber": "Enter valid number greater than 0!",
+  "calculateAnotherLoan": "Would you like to calculate another loan? Enter ('y' or 'n')"
 }
