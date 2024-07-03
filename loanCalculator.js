@@ -18,11 +18,13 @@ const getValidNumber = () => {
     prompt(messagePrompts.enterValidNumber);
     number = ask();
   }
+  console.clear();
   number = Number(number);
   return number;
 };
 
-const numberToPercentageRate = () => {
+// convert APR input to decimal
+const numberToDecimal = () => {
   prompt(messagePrompts.askForAPR);
   let APR = getValidNumber();
   APR /= 100;
@@ -37,6 +39,7 @@ const loanDuration = () => {
 };
 
 const calculateMonthlyPayment = (loanAmount, loanDuration, monthlyInterestRate) => {
+  console.clear();
   const denominator = 1 - Math.pow((1 + monthlyInterestRate), -loanDuration);
   const monthlyPayment = loanAmount * (monthlyInterestRate / denominator);
   return monthlyPayment;
@@ -47,14 +50,16 @@ function runLoanCalculator() {
   prompt(messagePrompts.askForLoanAmount);
   const loanAmount = getValidNumber();
   prompt(`Your loan amount is $${loanAmount.toLocaleString()}`);
-  const annualPercentageRate = numberToPercentageRate();
+  const annualPercentageRate = numberToDecimal();
   const monthlyInterestRate = annualPercentageRate / 12;
   const loanDurationInMonths = loanDuration();
   const monthlyPayment = calculateMonthlyPayment(
     loanAmount, loanDurationInMonths, monthlyInterestRate
   );
-  return `Your monthly payment is ${monthlyPayment.toFixed(2)}`;
+  let totalPaidAfterInterest = monthlyPayment * loanDurationInMonths;
+  totalPaidAfterInterest -= loanAmount;
 
+  return `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalPaidAfterInterest.toFixed(2)} over the life of the loan`;
 }
 
 console.log(runLoanCalculator());
