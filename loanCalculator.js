@@ -48,9 +48,9 @@ const calculateMonthlyPayment = (
 };
 
 // having some fun here
-const reasonableMonthlyPayment = (monthlyPayment, totalInterest) => {
-  const scream = `Your monthly payment is $${monthlyPayment.toFixed(2)}!!! \nYour total interest paid over the life of the loan would be $${totalInterest.toFixed(2)}!! \nYou might want to reconsider!`;
-  const reasonable = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan.`;
+const reasonableMonthlyPayment = (monthlyPayment, totalPaid ,totalInterest) => {
+  const scream = `Your monthly payment is $${monthlyPayment.toFixed(2)}!!! \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan!! \nYou would pay $${totalPaid.toFixed(2)} in total! \nYou might want to reconsider!`;
+  const reasonable = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan.\nYou would pay $${totalPaid.toFixed(2)} in total!`;
 
   if (monthlyPayment >= 400) return scream.toUpperCase();
   return reasonable;
@@ -67,10 +67,12 @@ function runLoanCalculator() {
   const monthlyPayment = calculateMonthlyPayment(
     loanAmount, loanDurationInMonths, monthlyInterestRate
   );
-  let totalPaidAfterInterest = monthlyPayment * loanDurationInMonths;
-  totalPaidAfterInterest -= loanAmount;
+  const totalPaidAfterInterest = monthlyPayment * loanDurationInMonths;
+  const totalInterest = totalPaidAfterInterest - loanAmount;
 
-  return reasonableMonthlyPayment(monthlyPayment, totalPaidAfterInterest);
+  return reasonableMonthlyPayment(
+    monthlyPayment, totalPaidAfterInterest, totalInterest
+  );
 }
 
 console.log(runLoanCalculator());
