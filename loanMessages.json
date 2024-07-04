@@ -5,5 +5,6 @@
   "greeting": "Lets calculate your Monthly Loan payment!",
   "notValidNumber": "is not a valid number!",
   "enterValidNumber": "Enter valid number greater than 0!",
-  "calculateAnotherLoan": "Would you like to calculate another loan? Enter ('y' or 'n')"
+  "calculateAnotherLoan": "Would you like to calculate another loan? Enter ('y' or 'n')",
+  "enterValidSelection": "y, n, yes or no are valid options. Choose one!"
 }

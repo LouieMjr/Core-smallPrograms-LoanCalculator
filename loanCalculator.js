@@ -50,21 +50,28 @@ const calculateMonthlyPayment = (
 
 // having some fun here
 const reasonableMonthlyPayment = (monthlyPayment, totalPaid ,totalInterest) => {
-  const scream = `Your monthly payment is $${monthlyPayment.toFixed(2)}!!! \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan!! \nYou would pay $${totalPaid.toFixed(2)} in total! \nYou might want to reconsider!`;
-  const reasonable = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan.\nYou would pay $${totalPaid.toFixed(2)} in total!`;
+  const scream = '\nYou might want to reconsider!'.toUpperCase();
+  const paymentInfo = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan.\nYou would pay $${totalPaid.toFixed(2)} in total!`;
 
-  if (monthlyPayment >= 400) return scream.toUpperCase();
-  return reasonable;
+  if (monthlyPayment >= 400) {
+    console.log(paymentInfo + scream);
+    return;
+  }
+  console.log(paymentInfo);
 };
 
 const restartLoanCalculator = () => {
   prompt(messagePrompts.calculateAnotherLoan);
   const response = ask().toLowerCase();
-  if (response[0] === 'y' || response[0] === "yes") {
+  if (response === 'y' || response === "yes") {
     console.clear();
     return runLoanCalculator();
+  } else if (response === 'n' || response === "no") {
+    console.log('Take care!');
+  } else {
+    prompt(messagePrompts.enterValidSelection);
+    return restartLoanCalculator();
   }
-  return 'Take care!';
 };
 
 function runLoanCalculator() {
@@ -81,10 +88,10 @@ function runLoanCalculator() {
   const totalPaidAfterInterest = monthlyPayment * loanDurationInYears;
   const totalInterest = totalPaidAfterInterest - loanAmount;
 
-  console.log(reasonableMonthlyPayment(
+  reasonableMonthlyPayment(
     monthlyPayment, totalPaidAfterInterest, totalInterest
-  ));
+  );
   return restartLoanCalculator();
 }
 
-console.log(runLoanCalculator());
+runLoanCalculator();
