@@ -68,10 +68,9 @@ const restartLoanCalculator = () => {
     return runLoanCalculator();
   } else if (response === 'n' || response === "no") {
     console.log('Take care!');
-  } else {
-    prompt(messagePrompts.enterValidSelection);
-    return restartLoanCalculator();
   }
+  prompt(messagePrompts.enterValidSelection);
+  return restartLoanCalculator();
 };
 
 function runLoanCalculator() {
