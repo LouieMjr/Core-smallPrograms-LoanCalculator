@@ -40,7 +40,16 @@ const loanDurationFromYearsToMonths = () => {
   return loanDuration * year;
 };
 
+const reasonableMonthlyPayment = (monthlyPayment, totalBeforeInterest ,totalInterest = 0) => {
+  const scream = '\nYou might want to reconsider!'.toUpperCase();
+  const paymentInfo = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan.\nYou would pay $${(totalBeforeInterest + totalInterest).toFixed(2)} in total!`;
 
+  if (monthlyPayment >= 400) {
+    console.log(paymentInfo + scream);
+    return;
+  }
+  console.log(paymentInfo);
+};
 
 const calculateMonthlyPaymentWithInterest = (
   loanAmount, loanDuration, monthlyInterestRate
@@ -51,21 +60,10 @@ const calculateMonthlyPaymentWithInterest = (
   return monthlyPayment;
 };
 
-const reasonableMonthlyPayment = (monthlyPayment, totalPaidBeforeInterest ,totalInterest = 0) => {
-  const scream = '\nYou might want to reconsider!'.toUpperCase();
-  const paymentInfo = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan.\nYou would pay $${(totalPaidBeforeInterest + totalInterest).toFixed(2)} in total!`;
-
-  if (monthlyPayment >= 400) {
-    console.log(paymentInfo + scream);
-    return;
-  }
-  console.log(paymentInfo);
-};
-
 const calculateInterestFreeMonthlyPayment = (loanAmount, loanDuration) => {
   console.clear();
   const monthlyPayment = loanAmount / loanDuration;
-  return reasonableMonthlyPayment(monthlyPayment, loanAmount)
+  return reasonableMonthlyPayment(monthlyPayment, loanAmount);
 };
 
 const restartLoanCalculator = () => {
