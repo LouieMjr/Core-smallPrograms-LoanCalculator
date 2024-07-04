@@ -6,7 +6,7 @@ const prompt = (message) => {
   return `=> ${console.log(message)}`;
 };
 
-const invalidNumber = number => Number.isNaN(Number(number)) || number.trimStart() === '' || Number(number) < 1;
+const invalidNumber = number => Number.isNaN(Number(number)) || number.trimStart() === '' || Number(number) < 0;
 
 const getValidNumber = () => {
   let number = ask();
@@ -24,22 +24,25 @@ const getValidNumber = () => {
 };
 
 // convert APR input to decimal
-const numberToDecimal = () => {
+const positiveNumberToDecimal = () => {
   prompt(messagePrompts.askForAPR);
   let APR = getValidNumber();
+  if (APR === 0) return APR;
   APR /= 100;
   prompt(`Which is ${APR}%`);
   return APR;
 };
 
-const loanDuration = () => {
+const loanDurationFromYearsToMonths = () => {
   prompt(messagePrompts.askForLoanDuration);
   const loanDuration = getValidNumber();
   const year = 12;
   return loanDuration * year;
 };
 
-const calculateMonthlyPayment = (
+
+
+const calculateMonthlyPaymentWithInterest = (
   loanAmount, loanDuration, monthlyInterestRate
 ) => {
   console.clear();
@@ -48,16 +51,21 @@ const calculateMonthlyPayment = (
   return monthlyPayment;
 };
 
-// having some fun here
-const reasonableMonthlyPayment = (monthlyPayment, totalPaid ,totalInterest) => {
+const reasonableMonthlyPayment = (monthlyPayment, totalPaidBeforeInterest ,totalInterest = 0) => {
   const scream = '\nYou might want to reconsider!'.toUpperCase();
-  const paymentInfo = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan.\nYou would pay $${totalPaid.toFixed(2)} in total!`;
+  const paymentInfo = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan.\nYou would pay $${(totalPaidBeforeInterest + totalInterest).toFixed(2)} in total!`;
 
   if (monthlyPayment >= 400) {
     console.log(paymentInfo + scream);
     return;
   }
   console.log(paymentInfo);
+};
+
+const calculateInterestFreeMonthlyPayment = (loanAmount, loanDuration) => {
+  console.clear();
+  const monthlyPayment = loanAmount / loanDuration;
+  return reasonableMonthlyPayment(monthlyPayment, loanAmount)
 };
 
 const restartLoanCalculator = () => {
@@ -75,23 +83,24 @@ const restartLoanCalculator = () => {
 };
 
 function runLoanCalculator() {
-  prompt(messagePrompts.greeting);
   prompt(messagePrompts.askForLoanAmount);
   const loanAmount = getValidNumber();
   prompt(`Your loan amount is $${loanAmount.toLocaleString()}`);
-  const annualPercentageRate = numberToDecimal();
-  const monthlyInterestRate = annualPercentageRate / 12;
-  const loanDurationInYears = loanDuration();
-  const monthlyPayment = calculateMonthlyPayment(
-    loanAmount, loanDurationInYears, monthlyInterestRate
-  );
-  const totalPaidAfterInterest = monthlyPayment * loanDurationInYears;
-  const totalInterest = totalPaidAfterInterest - loanAmount;
-
-  reasonableMonthlyPayment(
-    monthlyPayment, totalPaidAfterInterest, totalInterest
-  );
+  const loanDurationInMonths = loanDurationFromYearsToMonths();
+  const annualPercentageRate = positiveNumberToDecimal();
+  if (annualPercentageRate === 0) {
+    calculateInterestFreeMonthlyPayment(loanAmount, loanDurationInMonths);
+  } else {
+    const monthlyInterestRate = annualPercentageRate / 12;
+    const monthlyPayment = calculateMonthlyPaymentWithInterest(
+      loanAmount, loanDurationInMonths, monthlyInterestRate);
+    const totalPaidAfterInterest = monthlyPayment * loanDurationInMonths;
+    const totalInterest = totalPaidAfterInterest - loanAmount;
+    reasonableMonthlyPayment(
+      monthlyPayment, loanAmount, totalInterest
+    );
+  }
   return restartLoanCalculator();
 }
-
+prompt(messagePrompts.greeting);
 runLoanCalculator();
