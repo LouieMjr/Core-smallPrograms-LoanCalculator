@@ -40,9 +40,9 @@ const loanDurationFromYearsToMonths = () => {
   return loanDuration * year;
 };
 
-const reasonableMonthlyPayment = (monthlyPayment, totalBeforeInterest ,totalInterest = 0) => {
+const reasonableMonthlyPayment = (monthlyPayment, totalBeforeInterest ,interest = 0) => {
   const scream = '\nYou might want to reconsider!'.toUpperCase();
-  const paymentInfo = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${totalInterest.toFixed(2)} over the life of the loan.\nYou would pay $${(totalBeforeInterest + totalInterest).toFixed(2)} in total!`;
+  const paymentInfo = `Your monthly payment is $${monthlyPayment.toFixed(2)} \nYour total interest paid would be $${interest.toFixed(2)} over the life of the loan.\nYou would pay $${(totalBeforeInterest + interest).toFixed(2)} in total!`;
 
   if (monthlyPayment >= 400) {
     console.log(paymentInfo + scream);
